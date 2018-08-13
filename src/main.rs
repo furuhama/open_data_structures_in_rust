@@ -1,3 +1,5 @@
+mod read_file;
+
 fn main() {
-    println!("Hello, world!");
+    read_file::read_file_and_write_from_bottom();
 }
