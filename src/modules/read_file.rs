@@ -13,8 +13,31 @@ pub fn read_file_and_write_from_bottom() {
     lines.for_each(|line| list_container.push_last(Box::new(Node::new(line.unwrap()))));
 
     // print_list_container_from_last(&mut list_container)
+    print_list_container_from_last_longer(&mut list_container)
+}
 
-    // case: print seed_data.txt
+// this function uses pattern match and call itself recursively in `Some` pattern.
+// it calls function each pattern matching, and stack frame could be too deep easily.
+// (seed_data.txt has 1,000,000 lines, but the default maximum of stack frame is about 30,000)
+// if you really want to print each line of 1,000,000 lines,
+//     - you should NOT call function for each line.
+//     - you should use for loop or something. -> print_list_container_from_last_longer()
+fn print_list_container_from_last(link_container: &mut ListContainer) {
+    match link_container.pop_last() {
+        None => {
+            println!("=== End ===");
+        },
+        Some(node) => {
+            println!("{}", node.ref_content());
+            print_list_container_from_last(link_container);
+        }
+    }
+}
+
+// this function is improved version of print_list_container_from_last().
+// as written in print_list_container_from_last() comment,
+// it should use loop or something to print really large file.
+fn print_list_container_from_last_longer(list_container: &mut ListContainer) {
     loop {
         let result = list_container.pop_last();
         match result {
@@ -25,24 +48,6 @@ pub fn read_file_and_write_from_bottom() {
             Some(node) => {
                 println!("{}", node.ref_content())
             },
-        }
-    }
-}
-
-// this function uses pattern match and call itself recursively in `Some` pattern.
-// it calls function each pattern matching, and stack frame could be too deep easily.
-// (seed_data.txt has 1,000,000 lines, but the default maximum of stack frame is about 30,000)
-// if you really want to print each line of 1,000,000 lines,
-//     - you should NOT call function for each line.
-//     - you should use for loop or something.
-fn print_list_container_from_last(link_container: &mut ListContainer) {
-    match link_container.pop_last() {
-        None => {
-            println!("=== End ===");
-        },
-        Some(node) => {
-            println!("{}", node.ref_content());
-            print_list_container_from_last(link_container);
         }
     }
 }
