@@ -20,14 +20,14 @@ impl Node {
 }
 
 #[derive(Debug)]
-pub struct QueueContainer {
+pub struct ListContainer {
     first: Option<NonNull<Node>>,
     last: Option<NonNull<Node>>,
 }
 
-impl QueueContainer {
-    pub fn new() -> QueueContainer {
-        QueueContainer {
+impl ListContainer {
+    pub fn new() -> ListContainer {
+        ListContainer {
             first: None,
             last: None,
         }
@@ -132,82 +132,82 @@ pub fn read_file_and_write_from_bottom() {
 
 mod test {
     #[allow(unused)]
-    use super::{QueueContainer, Node};
+    use super::{ListContainer, Node};
 
     #[test]
     fn push_to_last_pop_from_last() {
-        let mut queue_container = QueueContainer::new();
+        let mut list_container = ListContainer::new();
 
-        queue_container.push_last(Box::new(Node::new(String::from("one"))));
-        queue_container.push_last(Box::new(Node::new(String::from("two"))));
-        queue_container.push_last(Box::new(Node::new(String::from("three"))));
+        list_container.push_last(Box::new(Node::new(String::from("one"))));
+        list_container.push_last(Box::new(Node::new(String::from("two"))));
+        list_container.push_last(Box::new(Node::new(String::from("three"))));
 
         // Container [Node("one"), Node("two"), Node("three")]
 
-        assert_eq!(queue_container.pop_last().unwrap().content, String::from("three"));
-        assert_eq!(queue_container.pop_last().unwrap().content, String::from("two"));
-        assert_eq!(queue_container.pop_last().unwrap().content, String::from("one"));
+        assert_eq!(list_container.pop_last().unwrap().content, String::from("three"));
+        assert_eq!(list_container.pop_last().unwrap().content, String::from("two"));
+        assert_eq!(list_container.pop_last().unwrap().content, String::from("one"));
     }
 
     #[test]
     fn push_to_last_pop_from_first() {
-        let mut queue_container = QueueContainer::new();
+        let mut list_container = ListContainer::new();
 
-        queue_container.push_last(Box::new(Node::new(String::from("one"))));
-        queue_container.push_last(Box::new(Node::new(String::from("two"))));
-        queue_container.push_last(Box::new(Node::new(String::from("three"))));
+        list_container.push_last(Box::new(Node::new(String::from("one"))));
+        list_container.push_last(Box::new(Node::new(String::from("two"))));
+        list_container.push_last(Box::new(Node::new(String::from("three"))));
 
         // Container [Node("one"), Node("two"), Node("three")]
 
-        assert_eq!(queue_container.pop_first().unwrap().content, String::from("one"));
-        assert_eq!(queue_container.pop_first().unwrap().content, String::from("two"));
-        assert_eq!(queue_container.pop_first().unwrap().content, String::from("three"));
+        assert_eq!(list_container.pop_first().unwrap().content, String::from("one"));
+        assert_eq!(list_container.pop_first().unwrap().content, String::from("two"));
+        assert_eq!(list_container.pop_first().unwrap().content, String::from("three"));
     }
 
     #[test]
     fn push_to_first_pop_from_last() {
-        let mut queue_container = QueueContainer::new();
+        let mut list_container = ListContainer::new();
 
-        queue_container.push_first(Box::new(Node::new(String::from("one"))));
-        queue_container.push_first(Box::new(Node::new(String::from("two"))));
-        queue_container.push_first(Box::new(Node::new(String::from("three"))));
+        list_container.push_first(Box::new(Node::new(String::from("one"))));
+        list_container.push_first(Box::new(Node::new(String::from("two"))));
+        list_container.push_first(Box::new(Node::new(String::from("three"))));
 
         // Container [Node("three"), Node("two"), Node("one")]
 
-        assert_eq!(queue_container.pop_last().unwrap().content, String::from("one"));
-        assert_eq!(queue_container.pop_last().unwrap().content, String::from("two"));
-        assert_eq!(queue_container.pop_last().unwrap().content, String::from("three"));
+        assert_eq!(list_container.pop_last().unwrap().content, String::from("one"));
+        assert_eq!(list_container.pop_last().unwrap().content, String::from("two"));
+        assert_eq!(list_container.pop_last().unwrap().content, String::from("three"));
     }
 
     #[test]
     fn push_to_first_pop_from_first() {
-        let mut queue_container = QueueContainer::new();
+        let mut list_container = ListContainer::new();
 
-        queue_container.push_first(Box::new(Node::new(String::from("one"))));
-        queue_container.push_first(Box::new(Node::new(String::from("two"))));
-        queue_container.push_first(Box::new(Node::new(String::from("three"))));
+        list_container.push_first(Box::new(Node::new(String::from("one"))));
+        list_container.push_first(Box::new(Node::new(String::from("two"))));
+        list_container.push_first(Box::new(Node::new(String::from("three"))));
 
         // Container [Node("three"), Node("two"), Node("one")]
 
-        assert_eq!(queue_container.pop_first().unwrap().content, String::from("three"));
-        assert_eq!(queue_container.pop_first().unwrap().content, String::from("two"));
-        assert_eq!(queue_container.pop_first().unwrap().content, String::from("one"));
+        assert_eq!(list_container.pop_first().unwrap().content, String::from("three"));
+        assert_eq!(list_container.pop_first().unwrap().content, String::from("two"));
+        assert_eq!(list_container.pop_first().unwrap().content, String::from("one"));
     }
 
     #[test]
     fn push_and_pop_randomly() {
-        let mut queue_container = QueueContainer::new();
+        let mut list_container = ListContainer::new();
 
-        queue_container.push_first(Box::new(Node::new(String::from("one"))));
-        queue_container.push_first(Box::new(Node::new(String::from("two"))));
-        queue_container.push_last(Box::new(Node::new(String::from("three"))));
-        queue_container.push_last(Box::new(Node::new(String::from("four"))));
+        list_container.push_first(Box::new(Node::new(String::from("one"))));
+        list_container.push_first(Box::new(Node::new(String::from("two"))));
+        list_container.push_last(Box::new(Node::new(String::from("three"))));
+        list_container.push_last(Box::new(Node::new(String::from("four"))));
 
         // Container [Node("two"), Node("one"), Node("three"), Node("four")]
 
-        assert_eq!(queue_container.pop_first().unwrap().content, String::from("two"));
-        assert_eq!(queue_container.pop_last().unwrap().content, String::from("four"));
-        assert_eq!(queue_container.pop_first().unwrap().content, String::from("one"));
-        assert_eq!(queue_container.pop_last().unwrap().content, String::from("three"));
+        assert_eq!(list_container.pop_first().unwrap().content, String::from("two"));
+        assert_eq!(list_container.pop_last().unwrap().content, String::from("four"));
+        assert_eq!(list_container.pop_first().unwrap().content, String::from("one"));
+        assert_eq!(list_container.pop_last().unwrap().content, String::from("three"));
     }
 }
