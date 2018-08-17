@@ -15,6 +15,10 @@ impl Node {
             content: content,
         }
     }
+
+    pub fn ref_content(&self) -> &str {
+        &self.content
+    }
 }
 
 #[derive(Debug)]
