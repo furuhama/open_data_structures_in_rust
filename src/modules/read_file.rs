@@ -15,6 +15,12 @@ pub fn read_file_and_write_from_bottom() {
     print_list_container_from_last(&mut list_container)
 }
 
+// this function uses pattern match and call itself recursively in `Some` pattern.
+// it calls function each pattern matching, and stack frame could be too deep easily.
+// (seed_data.txt has 1,000,000 lines, but the default maximum of stack frame is about 30,000)
+// if you really want to print each line of 1,000,000 lines,
+//     - you should NOT call function for each line.
+//     - you should use for loop or something.
 fn print_list_container_from_last(link_container: &mut ListContainer) {
     match link_container.pop_last() {
         None => {
