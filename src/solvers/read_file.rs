@@ -1,7 +1,8 @@
 use std::fs::File;
-use std::io::{BufReader, BufRead};
+use std::io::{BufReader, BufRead, Lines};
 use super::super::modules::list_container::{Node, ListContainer};
 
+// introduction 1
 pub fn read_file_and_write_from_bottom() {
     // `seed_data.txt` contains 1,000,000 lines of texts.
     // let f = File::open("seed_data.txt").expect("No such file or directory");
@@ -50,4 +51,32 @@ fn print_list_container_from_last_longer(list_container: &mut ListContainer) {
             },
         }
     }
+}
+
+// introduction 2
+pub fn read_each_50_lines_and_write() {
+    let f = File::open("small_seed_data.txt").expect("No such file or directory");
+    let reader = BufReader::new(f);
+    let mut lines = reader.lines();
+
+    let mut list_container = ListContainer::new();
+
+    let mut idx = 0 as usize;
+
+    while let Ok(i) = read_50_lines_and_write(&mut lines, &list_container, idx) {
+        idx = i;
+        println!("Take a break, I'm little bit tired.");
+    };
+}
+
+fn read_50_lines_and_write(lines_iter: &mut Lines<BufReader<File>>, list_container: &ListContainer, mut index: usize) -> Result<usize, &'static str> {
+    for _ in 0..50 {
+        if let Some(node) = lines_iter.next() {
+            println!("{}", node.unwrap());
+            index += 1;
+        } else {
+            return Err("EOF");
+        }
+    }
+    Ok(index)
 }

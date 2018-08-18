@@ -5,5 +5,5 @@ mod modules;
 mod solvers;
 
 fn main() {
-    solvers::read_file::read_file_and_write_from_bottom();
+    solvers::read_file::read_each_50_lines_and_write();
 }
