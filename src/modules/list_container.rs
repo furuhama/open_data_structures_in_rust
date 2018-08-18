@@ -8,8 +8,8 @@ pub struct Node {
 }
 
 impl Node {
-    pub fn new(content: String) -> Node {
-        Node {
+    pub fn new(content: String) -> Self {
+        Self {
             prev: None,
             next: None,
             content: content,
@@ -28,8 +28,8 @@ pub struct ListContainer {
 }
 
 impl ListContainer {
-    pub fn new() -> ListContainer {
-        ListContainer {
+    pub fn new() -> Self {
+        Self {
             first: None,
             last: None,
         }

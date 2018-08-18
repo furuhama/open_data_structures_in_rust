@@ -4,8 +4,8 @@ pub struct Element {
 }
 
 impl Element {
-    pub fn new(content: String) -> Element {
-        Element {
+    pub fn new(content: String) -> Self {
+        Self {
             content: content,
         }
     }
@@ -32,8 +32,8 @@ trait IsUSet {
 }
 
 impl USet {
-    pub fn new() -> USet {
-        USet {
+    pub fn new() -> Self {
+        Self {
             // use vector to manage elements
             elements: Vec::<Box<Element>>::new(),
             size: 0,
