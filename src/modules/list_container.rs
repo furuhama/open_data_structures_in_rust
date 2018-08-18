@@ -43,8 +43,8 @@ impl ListContainer {
 
                 // set pointer for container
                 self.first = Some(node_ptr);
-                self.last= Some(node_ptr);
-            },
+                self.last = Some(node_ptr);
+            }
             // case: ListContainer has some Nodes
             Some(_) => {
                 unsafe {
@@ -58,7 +58,7 @@ impl ListContainer {
                     // set pointer for container
                     self.first = Some(node_ptr);
                 }
-            },
+            }
         }
     }
 
@@ -70,8 +70,8 @@ impl ListContainer {
 
                 // set pointer for container
                 self.first = Some(node_ptr);
-                self.last= Some(node_ptr);
-            },
+                self.last = Some(node_ptr);
+            }
             // case: ListContainer has some Nodes
             Some(_) => {
                 unsafe {
@@ -85,16 +85,14 @@ impl ListContainer {
                     // set pointer for container
                     self.last = Some(node_ptr);
                 }
-            },
+            }
         }
     }
 
     pub fn pop_first(&mut self) -> Option<Box<Node>> {
         match self.first {
             // case: ListContainer is empty
-            None => {
-                None
-            },
+            None => None,
             // case: ListContainer has some Nodes
             Some(mut node_ptr) => {
                 unsafe {
@@ -106,7 +104,7 @@ impl ListContainer {
                             self.last = None;
 
                             Some(Box::from_raw(node_ptr.as_mut()))
-                        },
+                        }
                         // case: ListContainer has two or more Nodes
                         Some(next_ptr) => {
                             // set pointer for container
@@ -118,16 +116,14 @@ impl ListContainer {
                         }
                     }
                 }
-            },
+            }
         }
     }
 
     pub fn pop_last(&mut self) -> Option<Box<Node>> {
         match self.last {
             // case: ListContainer is empty
-            None => {
-                None
-            },
+            None => None,
             // case: ListContainer has some Nodes
             Some(mut node_ptr) => {
                 unsafe {
@@ -139,7 +135,7 @@ impl ListContainer {
                             self.last = None;
 
                             Some(Box::from_raw(node_ptr.as_mut()))
-                        },
+                        }
                         // case: ListContainer has two or more Nodes
                         Some(prev_ptr) => {
                             // set pointer for container
@@ -151,7 +147,7 @@ impl ListContainer {
                         }
                     }
                 }
-            },
+            }
         }
     }
 }
@@ -170,9 +166,18 @@ mod test {
 
         // Container [Node("one"), Node("two"), Node("three")]
 
-        assert_eq!(list_container.pop_last().unwrap().content, String::from("three"));
-        assert_eq!(list_container.pop_last().unwrap().content, String::from("two"));
-        assert_eq!(list_container.pop_last().unwrap().content, String::from("one"));
+        assert_eq!(
+            list_container.pop_last().unwrap().content,
+            String::from("three")
+        );
+        assert_eq!(
+            list_container.pop_last().unwrap().content,
+            String::from("two")
+        );
+        assert_eq!(
+            list_container.pop_last().unwrap().content,
+            String::from("one")
+        );
     }
 
     #[test]
@@ -185,9 +190,18 @@ mod test {
 
         // Container [Node("one"), Node("two"), Node("three")]
 
-        assert_eq!(list_container.pop_first().unwrap().content, String::from("one"));
-        assert_eq!(list_container.pop_first().unwrap().content, String::from("two"));
-        assert_eq!(list_container.pop_first().unwrap().content, String::from("three"));
+        assert_eq!(
+            list_container.pop_first().unwrap().content,
+            String::from("one")
+        );
+        assert_eq!(
+            list_container.pop_first().unwrap().content,
+            String::from("two")
+        );
+        assert_eq!(
+            list_container.pop_first().unwrap().content,
+            String::from("three")
+        );
     }
 
     #[test]
@@ -200,9 +214,18 @@ mod test {
 
         // Container [Node("three"), Node("two"), Node("one")]
 
-        assert_eq!(list_container.pop_last().unwrap().content, String::from("one"));
-        assert_eq!(list_container.pop_last().unwrap().content, String::from("two"));
-        assert_eq!(list_container.pop_last().unwrap().content, String::from("three"));
+        assert_eq!(
+            list_container.pop_last().unwrap().content,
+            String::from("one")
+        );
+        assert_eq!(
+            list_container.pop_last().unwrap().content,
+            String::from("two")
+        );
+        assert_eq!(
+            list_container.pop_last().unwrap().content,
+            String::from("three")
+        );
     }
 
     #[test]
@@ -215,9 +238,18 @@ mod test {
 
         // Container [Node("three"), Node("two"), Node("one")]
 
-        assert_eq!(list_container.pop_first().unwrap().content, String::from("three"));
-        assert_eq!(list_container.pop_first().unwrap().content, String::from("two"));
-        assert_eq!(list_container.pop_first().unwrap().content, String::from("one"));
+        assert_eq!(
+            list_container.pop_first().unwrap().content,
+            String::from("three")
+        );
+        assert_eq!(
+            list_container.pop_first().unwrap().content,
+            String::from("two")
+        );
+        assert_eq!(
+            list_container.pop_first().unwrap().content,
+            String::from("one")
+        );
     }
 
     #[test]
@@ -231,9 +263,21 @@ mod test {
 
         // Container [Node("two"), Node("one"), Node("three"), Node("four")]
 
-        assert_eq!(list_container.pop_first().unwrap().content, String::from("two"));
-        assert_eq!(list_container.pop_last().unwrap().content, String::from("four"));
-        assert_eq!(list_container.pop_first().unwrap().content, String::from("one"));
-        assert_eq!(list_container.pop_last().unwrap().content, String::from("three"));
+        assert_eq!(
+            list_container.pop_first().unwrap().content,
+            String::from("two")
+        );
+        assert_eq!(
+            list_container.pop_last().unwrap().content,
+            String::from("four")
+        );
+        assert_eq!(
+            list_container.pop_first().unwrap().content,
+            String::from("one")
+        );
+        assert_eq!(
+            list_container.pop_last().unwrap().content,
+            String::from("three")
+        );
     }
 }

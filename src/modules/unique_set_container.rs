@@ -5,9 +5,7 @@ pub struct Element {
 
 impl Element {
     pub fn new(content: String) -> Self {
-        Self {
-            content: content,
-        }
+        Self { content: content }
     }
 
     fn ref_content(&self) -> &str {
@@ -53,11 +51,9 @@ impl IsUSet for USet {
                 self.elements.push(element);
                 self.size += 1;
                 true
-            },
-            // case: USet contains the new element -> failure
-            Some(_) => {
-                false
             }
+            // case: USet contains the new element -> failure
+            Some(_) => false,
         }
     }
 
@@ -75,7 +71,7 @@ impl IsUSet for USet {
 mod test {
     // to use USet methods defined in IsUSet trait,
     // you should use its trait explicitly
-    use super::{Element, USet, IsUSet};
+    use super::{Element, IsUSet, USet};
 
     #[test]
     fn basic() {
@@ -93,7 +89,10 @@ mod test {
 
         assert_eq!(uset.remove(String::from("hogehogefugafuga")), None);
         assert_eq!(uset.size, 2);
-        assert_eq!(uset.remove(String::from("two")), Some(Box::new(Element::new(String::from("two")))));
+        assert_eq!(
+            uset.remove(String::from("two")),
+            Some(Box::new(Element::new(String::from("two"))))
+        );
         assert_eq!(uset.size, 1);
         // this should fail, because `two` is already removed from USet,
         assert_eq!(uset.remove(String::from("two")), None);

@@ -1,6 +1,6 @@
+use super::super::modules::list_container::{ListContainer, Node};
 use std::fs::File;
-use std::io::{BufReader, BufRead, Lines};
-use super::super::modules::list_container::{Node, ListContainer};
+use std::io::{BufRead, BufReader, Lines};
 
 pub fn read_files_and_do_something() {
     // `seed_data.txt` contains 1,000,000 lines of texts.
@@ -24,7 +24,7 @@ fn open_file_to_lines(filename: &str) -> Result<Lines<BufReader<File>>, &'static
         Ok(f) => {
             let reader = BufReader::new(f);
             return Ok(reader.lines());
-        },
+        }
         Err(_) => {
             return Err("No such file or directory");
         }
@@ -50,7 +50,7 @@ fn print_list_container_from_last(link_container: &mut ListContainer) {
     match link_container.pop_last() {
         None => {
             println!("=== End ===");
-        },
+        }
         Some(node) => {
             println!("{}", node.ref_content());
             print_list_container_from_last(link_container);
@@ -68,10 +68,8 @@ fn print_list_container_from_last_longer(list_container: &mut ListContainer) {
             None => {
                 println!("=== End ===");
                 break;
-            },
-            Some(node) => {
-                println!("{}", node.ref_content())
-            },
+            }
+            Some(node) => println!("{}", node.ref_content()),
         }
     }
 }
@@ -84,10 +82,14 @@ pub fn read_each_50_lines(lines: &mut Lines<BufReader<File>>, list_container: &m
     while let Ok(i) = read_50_lines_and_write(lines, list_container, idx) {
         idx = i;
         println!("Take a break, I'm little bit tired.");
-    };
+    }
 }
 
-fn read_50_lines_and_write(lines_iter: &mut Lines<BufReader<File>>, list_container: &mut ListContainer, mut index: usize) -> Result<usize, &'static str> {
+fn read_50_lines_and_write(
+    lines_iter: &mut Lines<BufReader<File>>,
+    list_container: &mut ListContainer,
+    mut index: usize,
+) -> Result<usize, &'static str> {
     for _ in 0..50 {
         // use if let (almost the same as match expression)
         if let Some(line) = lines_iter.next() {
@@ -104,7 +106,7 @@ fn read_50_lines_and_write(lines_iter: &mut Lines<BufReader<File>>, list_contain
             Some(node) => {
                 println!("{}", node.ref_content());
                 p_idx += 1;
-            },
+            }
             None => {
                 break;
             }
