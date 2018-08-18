@@ -11,10 +11,10 @@ pub fn read_files_and_do_something() {
     let mut list_container = ListContainer::new();
 
     // introduction 1
-    read_from_bottom(&mut lines, &mut list_container);
+    // read_from_bottom(&mut lines, &mut list_container);
 
     // introduction 2
-    // read_each_50_lines(&mut lines, &list_container);
+    read_each_50_lines(&mut lines, &mut list_container);
 }
 
 // Shared function
@@ -78,7 +78,7 @@ fn print_list_container_from_last_longer(list_container: &mut ListContainer) {
 
 // introduction 2
 
-pub fn read_each_50_lines(lines: &mut Lines<BufReader<File>>, list_container: &ListContainer) {
+pub fn read_each_50_lines(lines: &mut Lines<BufReader<File>>, list_container: &mut ListContainer) {
     let mut idx = 0 as usize;
 
     while let Ok(i) = read_50_lines_and_write(lines, list_container, idx) {
@@ -87,14 +87,33 @@ pub fn read_each_50_lines(lines: &mut Lines<BufReader<File>>, list_container: &L
     };
 }
 
-fn read_50_lines_and_write(lines_iter: &mut Lines<BufReader<File>>, list_container: &ListContainer, mut index: usize) -> Result<usize, &'static str> {
+fn read_50_lines_and_write(lines_iter: &mut Lines<BufReader<File>>, list_container: &mut ListContainer, mut index: usize) -> Result<usize, &'static str> {
     for _ in 0..50 {
-        if let Some(node) = lines_iter.next() {
-            println!("{}", node.unwrap());
+        // use if let (almost the same as match expression)
+        if let Some(line) = lines_iter.next() {
+            list_container.push_last(Box::new(Node::new(line.unwrap())));
             index += 1;
         } else {
-            return Err("EOF");
+            break;
         }
     }
-    Ok(index)
+
+    let mut p_idx = 0;
+    for _ in 0..50 {
+        match list_container.pop_first() {
+            Some(node) => {
+                println!("{}", node.ref_content());
+                p_idx += 1;
+            },
+            None => {
+                break;
+            }
+        }
+    }
+
+    if p_idx == 50 {
+        Ok(index)
+    } else {
+        Err("EOF")
+    }
 }
