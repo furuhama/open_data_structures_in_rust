@@ -2,7 +2,8 @@
 extern crate open_data_structures_in_rust;
 
 mod modules;
+mod solvers;
 
 fn main() {
-    modules::read_file::read_file_and_write_from_bottom();
+    solvers::read_file::read_file_and_write_from_bottom();
 }
