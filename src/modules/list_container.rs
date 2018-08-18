@@ -25,6 +25,7 @@ impl Node {
 pub struct ListContainer {
     first: Option<NonNull<Node>>,
     last: Option<NonNull<Node>>,
+    size: usize,
 }
 
 impl ListContainer {
@@ -32,7 +33,12 @@ impl ListContainer {
         Self {
             first: None,
             last: None,
+            size: 0,
         }
+    }
+
+    pub fn size(&self) -> usize {
+        self.size
     }
 
     pub fn push_first(&mut self, mut node: Box<Node>) {
@@ -44,6 +50,7 @@ impl ListContainer {
                 // set pointer for container
                 self.first = Some(node_ptr);
                 self.last = Some(node_ptr);
+                self.size += 1;
             }
             // case: ListContainer has some Nodes
             Some(_) => {
@@ -57,6 +64,7 @@ impl ListContainer {
                     self.first.unwrap().as_mut().prev = Some(node_ptr);
                     // set pointer for container
                     self.first = Some(node_ptr);
+                    self.size += 1;
                 }
             }
         }
@@ -71,6 +79,7 @@ impl ListContainer {
                 // set pointer for container
                 self.first = Some(node_ptr);
                 self.last = Some(node_ptr);
+                self.size += 1;
             }
             // case: ListContainer has some Nodes
             Some(_) => {
@@ -84,6 +93,7 @@ impl ListContainer {
                     self.last.unwrap().as_mut().next = Some(node_ptr);
                     // set pointer for container
                     self.last = Some(node_ptr);
+                    self.size += 1;
                 }
             }
         }
@@ -102,6 +112,7 @@ impl ListContainer {
                             // set pointer for container
                             self.first = None;
                             self.last = None;
+                            self.size -= 1;
 
                             Some(Box::from_raw(node_ptr.as_mut()))
                         }
@@ -109,6 +120,7 @@ impl ListContainer {
                         Some(next_ptr) => {
                             // set pointer for container
                             self.first = Some(next_ptr);
+                            self.size -= 1;
                             // set container for new first node
                             self.first.unwrap().as_mut().prev = None;
 
@@ -133,6 +145,7 @@ impl ListContainer {
                             // set pointer for container
                             self.first = None;
                             self.last = None;
+                            self.size -= 1;
 
                             Some(Box::from_raw(node_ptr.as_mut()))
                         }
@@ -140,6 +153,7 @@ impl ListContainer {
                         Some(prev_ptr) => {
                             // set pointer for container
                             self.last = Some(prev_ptr);
+                            self.size -= 1;
                             // set pointer for new last node
                             self.last.unwrap().as_mut().next = None;
 
@@ -159,10 +173,14 @@ mod test {
     #[test]
     fn push_to_last_pop_from_last() {
         let mut list_container = ListContainer::new();
+        assert_eq!(list_container.size(), 0);
 
         list_container.push_last(Box::new(Node::new(String::from("one"))));
+        assert_eq!(list_container.size(), 1);
         list_container.push_last(Box::new(Node::new(String::from("two"))));
+        assert_eq!(list_container.size(), 2);
         list_container.push_last(Box::new(Node::new(String::from("three"))));
+        assert_eq!(list_container.size(), 3);
 
         // Container [Node("one"), Node("two"), Node("three")]
 
@@ -170,23 +188,30 @@ mod test {
             list_container.pop_last().unwrap().content,
             String::from("three")
         );
+        assert_eq!(list_container.size(), 2);
         assert_eq!(
             list_container.pop_last().unwrap().content,
             String::from("two")
         );
+        assert_eq!(list_container.size(), 1);
         assert_eq!(
             list_container.pop_last().unwrap().content,
             String::from("one")
         );
+        assert_eq!(list_container.size(), 0);
     }
 
     #[test]
     fn push_to_last_pop_from_first() {
         let mut list_container = ListContainer::new();
+        assert_eq!(list_container.size(), 0);
 
         list_container.push_last(Box::new(Node::new(String::from("one"))));
+        assert_eq!(list_container.size(), 1);
         list_container.push_last(Box::new(Node::new(String::from("two"))));
+        assert_eq!(list_container.size(), 2);
         list_container.push_last(Box::new(Node::new(String::from("three"))));
+        assert_eq!(list_container.size(), 3);
 
         // Container [Node("one"), Node("two"), Node("three")]
 
@@ -194,23 +219,30 @@ mod test {
             list_container.pop_first().unwrap().content,
             String::from("one")
         );
+        assert_eq!(list_container.size(), 2);
         assert_eq!(
             list_container.pop_first().unwrap().content,
             String::from("two")
         );
+        assert_eq!(list_container.size(), 1);
         assert_eq!(
             list_container.pop_first().unwrap().content,
             String::from("three")
         );
+        assert_eq!(list_container.size(), 0);
     }
 
     #[test]
     fn push_to_first_pop_from_last() {
         let mut list_container = ListContainer::new();
+        assert_eq!(list_container.size(), 0);
 
         list_container.push_first(Box::new(Node::new(String::from("one"))));
+        assert_eq!(list_container.size(), 1);
         list_container.push_first(Box::new(Node::new(String::from("two"))));
+        assert_eq!(list_container.size(), 2);
         list_container.push_first(Box::new(Node::new(String::from("three"))));
+        assert_eq!(list_container.size(), 3);
 
         // Container [Node("three"), Node("two"), Node("one")]
 
@@ -218,23 +250,30 @@ mod test {
             list_container.pop_last().unwrap().content,
             String::from("one")
         );
+        assert_eq!(list_container.size(), 2);
         assert_eq!(
             list_container.pop_last().unwrap().content,
             String::from("two")
         );
+        assert_eq!(list_container.size(), 1);
         assert_eq!(
             list_container.pop_last().unwrap().content,
             String::from("three")
         );
+        assert_eq!(list_container.size(), 0);
     }
 
     #[test]
     fn push_to_first_pop_from_first() {
         let mut list_container = ListContainer::new();
+        assert_eq!(list_container.size(), 0);
 
         list_container.push_first(Box::new(Node::new(String::from("one"))));
+        assert_eq!(list_container.size(), 1);
         list_container.push_first(Box::new(Node::new(String::from("two"))));
+        assert_eq!(list_container.size(), 2);
         list_container.push_first(Box::new(Node::new(String::from("three"))));
+        assert_eq!(list_container.size(), 3);
 
         // Container [Node("three"), Node("two"), Node("one")]
 
@@ -242,14 +281,17 @@ mod test {
             list_container.pop_first().unwrap().content,
             String::from("three")
         );
+        assert_eq!(list_container.size(), 2);
         assert_eq!(
             list_container.pop_first().unwrap().content,
             String::from("two")
         );
+        assert_eq!(list_container.size(), 1);
         assert_eq!(
             list_container.pop_first().unwrap().content,
             String::from("one")
         );
+        assert_eq!(list_container.size(), 0);
     }
 
     #[test]
