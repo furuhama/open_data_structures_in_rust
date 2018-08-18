@@ -31,7 +31,7 @@ fn open_file_to_lines(filename: &str) -> Result<Lines<BufReader<File>>, &'static
     }
 }
 
-// introduction 1
+// introduction 1.1.1
 
 fn read_from_bottom(lines: &mut Lines<BufReader<File>>, list_container: &mut ListContainer) {
     lines.for_each(|line| list_container.push_last(Box::new(Node::new(line.unwrap()))));
@@ -76,7 +76,7 @@ fn print_list_container_from_last_longer(list_container: &mut ListContainer) {
     }
 }
 
-// introduction 2
+// introduction 1.1.2
 
 pub fn read_each_50_lines(lines: &mut Lines<BufReader<File>>, list_container: &mut ListContainer) {
     let mut idx = 0;
