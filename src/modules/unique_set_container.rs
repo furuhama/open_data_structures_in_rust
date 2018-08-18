@@ -82,5 +82,7 @@ mod test {
         assert_eq!(uset.size, 2);
         assert_eq!(uset.remove(String::from("two")), Some(Box::new(Element::new(String::from("two")))));
         assert_eq!(uset.size, 1);
+        assert_eq!(uset.remove(String::from("two")), None);
+        assert_eq!(uset.size, 1);
     }
 }
