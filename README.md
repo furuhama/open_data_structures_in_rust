@@ -9,3 +9,4 @@ just for my practice
 ## Supported Data Structures
 
 - LinkedList (named `LinkContainer`)
+- UniqueSet (named `USet`)

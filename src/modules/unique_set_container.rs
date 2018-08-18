@@ -21,6 +21,8 @@ pub struct USet {
     size: usize,
 }
 
+// try to use trait
+// define interface of USet struct
 trait IsUSet {
     fn size(&self) -> usize;
 
@@ -32,6 +34,7 @@ trait IsUSet {
 impl USet {
     pub fn new() -> USet {
         USet {
+            // use vector to manage elements
             elements: Vec::<Box<Element>>::new(),
             size: 0,
         }
@@ -45,11 +48,13 @@ impl IsUSet for USet {
 
     fn add(&mut self, element: Box<Element>) -> bool {
         match self.elements.iter().find(|&e| *e == element) {
+            // case: USet does not contain the new element -> success
             None => {
                 self.elements.push(element);
                 self.size += 1;
                 true
             },
+            // case: USet contains the new element -> failure
             Some(_) => {
                 false
             }
@@ -57,6 +62,10 @@ impl IsUSet for USet {
     }
 
     fn remove(&mut self, content: String) -> Option<Box<Element>> {
+        // if USet does not contains the element with the given content,
+        //     -> `?` operator returns None
+        // else if USet contains the element,
+        //     -> `?` operator unwraps Some(_) and returns index
         let index = self.elements.iter().position(|e| *e.content == content)?;
         self.size -= 1;
         Some(self.elements.remove(index))
@@ -64,6 +73,8 @@ impl IsUSet for USet {
 }
 
 mod test {
+    // to use USet methods defined in IsUSet trait,
+    // you should use its trait explicitly
     use super::{Element, USet, IsUSet};
 
     #[test]
@@ -72,7 +83,9 @@ mod test {
 
         assert!(uset.add(Box::new(Element::new(String::from("one")))));
         assert_eq!(uset.size, 1);
+        // this should fail, because USet already has `one`,
         assert!(!uset.add(Box::new(Element::new(String::from("one")))));
+        // and the size should keep 1
         assert_eq!(uset.size, 1);
 
         assert!(uset.add(Box::new(Element::new(String::from("two")))));
@@ -82,7 +95,9 @@ mod test {
         assert_eq!(uset.size, 2);
         assert_eq!(uset.remove(String::from("two")), Some(Box::new(Element::new(String::from("two")))));
         assert_eq!(uset.size, 1);
+        // this should fail, because `two` is already removed from USet,
         assert_eq!(uset.remove(String::from("two")), None);
+        // and the size should keep 1
         assert_eq!(uset.size, 1);
     }
 }
