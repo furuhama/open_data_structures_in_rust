@@ -2,18 +2,41 @@ use std::fs::File;
 use std::io::{BufReader, BufRead, Lines};
 use super::super::modules::list_container::{Node, ListContainer};
 
-// introduction 1
-pub fn read_file_and_write_from_bottom() {
+pub fn read_files_and_do_something() {
     // `seed_data.txt` contains 1,000,000 lines of texts.
-    // let f = File::open("seed_data.txt").expect("No such file or directory");
-    let f = File::open("small_seed_data.txt").expect("No such file or directory");
-    let reader = BufReader::new(f);
-    let lines = reader.lines();
+    // `small_seed_data.txt' contains about 250 lines of texts.
+    // let mut lines = open_file_to_lines("seed_data.txt").unwrap();
+    let mut lines = open_file_to_lines("small_seed_data.txt").unwrap();
 
     let mut list_container = ListContainer::new();
+
+    // introduction 1
+    read_from_bottom(&mut lines, &mut list_container);
+
+    // introduction 2
+    // read_each_50_lines(&mut lines, &list_container);
+}
+
+// Shared function
+
+fn open_file_to_lines(filename: &str) -> Result<Lines<BufReader<File>>, &'static str> {
+    match File::open(filename) {
+        Ok(f) => {
+            let reader = BufReader::new(f);
+            return Ok(reader.lines());
+        },
+        Err(_) => {
+            return Err("No such file or directory");
+        }
+    }
+}
+
+// introduction 1
+
+fn read_from_bottom(lines: &mut Lines<BufReader<File>>, list_container: &mut ListContainer) {
     lines.for_each(|line| list_container.push_last(Box::new(Node::new(line.unwrap()))));
 
-    print_list_container_from_last(&mut list_container)
+    print_list_container_from_last(list_container)
     // print_list_container_from_last_longer(&mut list_container)
 }
 
@@ -54,16 +77,11 @@ fn print_list_container_from_last_longer(list_container: &mut ListContainer) {
 }
 
 // introduction 2
-pub fn read_each_50_lines_and_write() {
-    let f = File::open("small_seed_data.txt").expect("No such file or directory");
-    let reader = BufReader::new(f);
-    let mut lines = reader.lines();
 
-    let mut list_container = ListContainer::new();
-
+pub fn read_each_50_lines(lines: &mut Lines<BufReader<File>>, list_container: &ListContainer) {
     let mut idx = 0 as usize;
 
-    while let Ok(i) = read_50_lines_and_write(&mut lines, &list_container, idx) {
+    while let Ok(i) = read_50_lines_and_write(lines, list_container, idx) {
         idx = i;
         println!("Take a break, I'm little bit tired.");
     };
