@@ -6,6 +6,7 @@ pub fn read_files_and_do_something() {
     // `seed_data.txt` contains 1,000,000 lines of texts.
     // `small_seed_data.txt' contains about 250 lines of texts.
     // let mut lines = open_file_to_lines("seed_data.txt").unwrap();
+    // let mut lines = open_file_to_lines("half_seed_data.txt").unwrap();
     let mut lines = open_file_to_lines("small_seed_data.txt").unwrap();
 
     let mut list_container = ListContainer::new();
@@ -81,7 +82,7 @@ pub fn read_each_50_lines(lines: &mut Lines<BufReader<File>>, list_container: &m
 
     while let Ok(i) = read_50_lines_and_write(lines, list_container, idx) {
         idx = i;
-        println!("Take a break, I'm little bit tired.");
+        println!("Take a break, I'm little bit tired. I'm in line {}.", idx);
     }
 }
 
