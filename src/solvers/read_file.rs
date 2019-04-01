@@ -4,7 +4,9 @@ use std::io::{BufRead, BufReader, Lines};
 
 pub fn read_files_and_do_something() {
     // `seed_data.txt` contains 1,000,000 lines of texts.
+    // `half_seed_data.txt` contains 500,000 lines of texts.
     // `small_seed_data.txt' contains about 250 lines of texts.
+
     // let mut lines = open_file_to_lines("seed_data.txt").unwrap();
     // let mut lines = open_file_to_lines("half_seed_data.txt").unwrap();
     let mut lines = open_file_to_lines("small_seed_data.txt").unwrap();
@@ -80,7 +82,8 @@ fn print_list_container_from_last_longer(list_container: &mut ListContainer) {
 pub fn read_each_50_lines(lines: &mut Lines<BufReader<File>>, list_container: &mut ListContainer) {
     let mut idx = 0;
 
-    while let Ok(i) = read_50_lines_and_write(lines, list_container, idx) {
+    // while let Ok(i) = read_50_lines_and_write(lines, list_container, idx) {
+    while let Ok(i) = read_50_lines_and_write_from_last(lines, list_container, idx) {
         idx = i;
         println!("Take a break, I'm little bit tired. I'm in line {}.", idx);
     }
@@ -104,6 +107,40 @@ fn read_50_lines_and_write(
     let mut p_idx = 0;
     for _ in 0..50 {
         match list_container.pop_first() {
+            Some(node) => {
+                println!("{}", node.ref_content());
+                p_idx += 1;
+            }
+            None => {
+                break;
+            }
+        }
+    }
+
+    if p_idx == 50 {
+        Ok(index)
+    } else {
+        Err("EOF")
+    }
+}
+
+fn read_50_lines_and_write_from_last(
+    lines_iter: &mut Lines<BufReader<File>>,
+    list_container: &mut ListContainer,
+    mut index: usize,
+) -> Result<usize, &'static str> {
+    for _ in 0..50 {
+        if let Some(line) = lines_iter.next() {
+            list_container.push_last(Box::new(Node::new(line.unwrap())));
+            index += 1;
+        } else {
+            break;
+        }
+    }
+
+    let mut p_idx = 0;
+    for _ in 0..50 {
+        match list_container.pop_last() {
             Some(node) => {
                 println!("{}", node.ref_content());
                 p_idx += 1;
