@@ -79,7 +79,7 @@ fn print_list_container_from_last_longer(list_container: &mut ListContainer) {
 
 // introduction 1.1.2
 
-pub fn read_each_50_lines(lines: &mut Lines<BufReader<File>>, list_container: &mut ListContainer) {
+fn read_each_50_lines(lines: &mut Lines<BufReader<File>>, list_container: &mut ListContainer) {
     let mut idx = 0;
 
     // while let Ok(i) = read_50_lines_and_write(lines, list_container, idx) {
