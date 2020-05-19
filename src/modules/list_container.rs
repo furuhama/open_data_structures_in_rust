@@ -45,7 +45,7 @@ impl ListContainer {
         match self.first {
             // case: ListContainer is empty
             None => {
-                let node_ptr = Box::into_raw_non_null(node);
+                let node_ptr = std::ptr::NonNull::new(Box::into_raw(node)).unwrap();
 
                 // set pointer for container
                 self.first = Some(node_ptr);
@@ -58,7 +58,7 @@ impl ListContainer {
                     // set pointer for pushed node
                     node.next = self.first;
 
-                    let node_ptr = Box::into_raw_non_null(node);
+                    let node_ptr = std::ptr::NonNull::new(Box::into_raw(node)).unwrap();
 
                     // set pointer for previous first node
                     self.first.unwrap().as_mut().prev = Some(node_ptr);
@@ -74,7 +74,7 @@ impl ListContainer {
         match self.last {
             // case: ListContainer is empty
             None => {
-                let node_ptr = Box::into_raw_non_null(node);
+                let node_ptr = std::ptr::NonNull::new(Box::into_raw(node)).unwrap();
 
                 // set pointer for container
                 self.first = Some(node_ptr);
@@ -87,7 +87,7 @@ impl ListContainer {
                     // set pointer for pushed node
                     node.prev = self.last;
 
-                    let node_ptr = Box::into_raw_non_null(node);
+                    let node_ptr = std::ptr::NonNull::new(Box::into_raw(node)).unwrap();
 
                     // set pointer for previous last node
                     self.last.unwrap().as_mut().next = Some(node_ptr);
