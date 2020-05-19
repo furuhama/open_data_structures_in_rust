@@ -24,9 +24,9 @@ pub struct UniqSet {
 trait IsUniqSet {
     fn size(&self) -> usize;
 
-    fn add(&mut self, Box<Element>) -> bool;
+    fn add(&mut self, element: Box<Element>) -> bool;
 
-    fn remove(&mut self, String) -> Option<Box<Element>>;
+    fn remove(&mut self, content: String) -> Option<Box<Element>>;
 }
 
 impl UniqSet {
